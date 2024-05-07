@@ -2,13 +2,19 @@ package main
 
 import "fmt"
 
-func main() {
-	categories := Categories{}
-	da := DataAccessor{&categories}
-	da.run(7)
-
-	fmt.Println()
-	products := Products{}
-	da = DataAccessor{&products}
-	da.run(3)
+func run(g GeneralInterface, top int) {
+	g.Connect()
+	g.Select()
+	g.Process(top)
+	g.Disconnect()
 }
+
+func main() {
+	products := Products{&DataAccessor{data: make([]string, 0, 10)}}
+	categories := Categories{&DataAccessor{data: make([]string, 0, 10)}}
+
+	run(&categories, 5)
+	fmt.Println()
+	run(&products, 2)
+}
+
